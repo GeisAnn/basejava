@@ -16,7 +16,14 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        return null;
+        Resume r1 = new Resume();
+        for (Resume r : storage) {
+            if (r.toString().equals(uuid)) {
+                r1 = r;
+                break;
+            }
+        }
+        return r1;
     }
 
     void delete(String uuid) {
