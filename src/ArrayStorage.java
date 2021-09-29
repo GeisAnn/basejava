@@ -49,9 +49,12 @@ public class ArrayStorage {
   }
 
   int size() {
-    for (Resume r: storage) {
-      
+    int count = 0;
+    for (Resume r : storage) {
+      if (r != null) {
+        count += 1;
+      }
     }
-    return 0;
+    return count;
   }
 }
