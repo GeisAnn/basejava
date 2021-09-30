@@ -11,23 +11,35 @@ public class ArrayStorage {
   }
 
   void save(Resume r) {
-    int i = size();
-    storage[i] = r;
-  }
 
-  Resume get(String uuid) {
-    Resume r1 = new Resume();
-    for (Resume r : storage) {
-      if (r.toString().equals(uuid)) {
-        r1 = r;
+    for (int i = 0; ; i++) {
+      if (storage[i] == null) {
+        storage[i] = r;
         break;
       }
     }
-    return r1;
   }
+
+  Resume get(String uuid) {
+
+    int n = size();
+    if (n == 0) {
+      return null;
+    }
+    for (int i = 0; i < n; i++) {
+      if (storage[i].toString().equals(uuid)) {
+        return storage[i];
+      }
+    }
+    return null;
+  }
+
 
   void delete(String uuid) {
     int n = size();
+    if (n == 0) {
+      return;
+    }
     for (int i = 0; i < n; i++) {
       if (storage[i].toString().equals(uuid)) {
         storage[i] = storage[i + 1];
@@ -38,7 +50,6 @@ public class ArrayStorage {
         break;
       }
     }
-
   }
 
   /**
@@ -49,12 +60,19 @@ public class ArrayStorage {
   }
 
   int size() {
-    int count = 0;
-    for (Resume r : storage) {
-      if (r != null) {
+
+    if (storage[0] == null) {
+      return 0;
+    }
+    int count = 1;
+    for (int i = 1; ; i++) {
+      if (storage[i] != null) {
         count += 1;
+      } else {
+        break;
       }
     }
     return count;
   }
 }
+
