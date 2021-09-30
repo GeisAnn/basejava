@@ -4,75 +4,57 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-  Resume[] storage = new Resume[10000];
+    Resume[] storage = new Resume[10000];
+    int size;
 
-  void clear() {
-    Arrays.fill(storage, null);
-  }
-
-  void save(Resume r) {
-
-    for (int i = 0; ; i++) {
-      if (storage[i] == null) {
-        storage[i] = r;
-        break;
-      }
+    void clear() {
+        Arrays.fill(storage, null);
+        size = 0;
     }
-  }
 
-  Resume get(String uuid) {
-
-    int n = size();
-    if (n == 0) {
-      return null;
-    }
-    for (int i = 0; i < n; i++) {
-      if (storage[i].toString().equals(uuid)) {
-        return storage[i];
-      }
-    }
-    return null;
-  }
-
-
-  void delete(String uuid) {
-    int n = size();
-    if (n == 0) {
-      return;
-    }
-    for (int i = 0; i < n; i++) {
-      if (storage[i].toString().equals(uuid)) {
-        storage[i] = storage[i + 1];
-        for (int k = i + 1; k + 1 < n; k++) {
-          storage[k] = storage[k + 1];
+    void save(Resume r) {
+        for (int i = 0; ; i++) {
+            if (storage[i] == null) {
+                storage[i] = r;
+                size += 1;
+                break;
+            }
         }
-        storage[n - 1] = null;
-        break;
-      }
     }
-  }
 
-  /**
-   * @return array, contains only Resumes in storage (without null)
-   */
-  Resume[] getAll() {
-    return Arrays.copyOfRange(storage, 0, size());
-  }
-
-  int size() {
-
-    if (storage[0] == null) {
-      return 0;
+    Resume get(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                return storage[i];
+            }
+        }
+        return null;
     }
-    int count = 1;
-    for (int i = 1; ; i++) {
-      if (storage[i] != null) {
-        count += 1;
-      } else {
-        break;
-      }
+
+
+    void delete(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                storage[i] = storage[i + 1];
+                for (int k = i + 1; k + 1 < size; k++) {
+                    storage[k] = storage[k + 1];
+                }
+                storage[size - 1] = null;
+                size -=1;
+                break;
+            }
+        }
     }
-    return count;
-  }
+
+    /**
+     * @return array, contains only Resumes in storage (without null)
+     */
+    Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
+    }
+
+    int size() {
+        return size;
+    }
 }
 
