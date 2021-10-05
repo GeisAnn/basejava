@@ -1,9 +1,13 @@
+package com.geisann.webapp;
+
+import com.geisann.webapp.storage.ArrayStorage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Interactive test for ArrayStorage implementation
+ * Interactive test for com.geisann.webapp.storage.ArrayStorage implementation
  * (just run, no need to understand)
  */
 public class MainArray {

@@ -1,5 +1,10 @@
+package com.geisann.webapp;
+
+import com.geisann.webapp.model.Resume;
+import com.geisann.webapp.storage.ArrayStorage;
+
 /**
- * Test for your ArrayStorage implementation
+ * Test for your com.geisann.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();

@@ -1,3 +1,5 @@
+package com.geisann.webapp.model;
+
 /**
  * Initial resume class
  */
