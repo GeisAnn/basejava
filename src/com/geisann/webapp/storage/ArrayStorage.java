@@ -19,11 +19,12 @@ public class ArrayStorage {
 
     public void update(Resume r) {
         if (!isElementPresent(r)) {
-            System.out.println("Resume is not present in the storage");
+            System.out.println("Resume with uuid " + r.getUuid() + " is not present in the storage");
         } else {
             for (int i = 0; i < size; i++) {
                 if (r.getUuid().equals(storage[i].getUuid())) {
                     storage[i] = r;
+                    System.out.println("Resume was updated");
                 }
             }
         }
@@ -34,7 +35,7 @@ public class ArrayStorage {
             System.out.println("The storage is full");
         } else {
             if (isElementPresent(r)) {
-                System.out.println("Resume is present in the storage");
+                System.out.println("Resume with uuid " + r.getUuid() + " is present in the storage");
 
             } else {
                 isElementPresent(r);
