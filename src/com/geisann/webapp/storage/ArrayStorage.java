@@ -18,7 +18,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (!isElementPresent(r)) {
+        if (!isElementPresent(r.getUuid())) {
             System.out.println("Resume with uuid " + r.getUuid() + " is not present in the storage");
         } else {
             for (int i = 0; i < size; i++) {
@@ -31,14 +31,13 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size == 10000) {
+        if (size == storage.length) {
             System.out.println("The storage is full");
         } else {
-            if (isElementPresent(r)) {
-                System.out.println("Resume with uuid " + r.getUuid() + " is present in the storage");
+            if (isElementPresent(r.getUuid())) {
+                System.out.println("Resume with uuid " + r.getUuid() + " is already present in the storage");
 
             } else {
-                isElementPresent(r);
                 storage[size] = r;
                 size++;
             }
@@ -81,15 +80,6 @@ public class ArrayStorage {
 
     public int size() {
         return size;
-    }
-
-    private boolean isElementPresent(Resume r) {
-        for (int i = 0; i < size; i++) {
-            if (r.getUuid().equals(storage[i].getUuid())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private boolean isElementPresent(String uuid) {
