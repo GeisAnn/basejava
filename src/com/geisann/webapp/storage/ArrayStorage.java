@@ -33,16 +33,13 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (size == storage.length) {
             System.out.println("The storage is full");
-        } else {
-            if (isElementPresent(r.getUuid())) {
-                System.out.println("Resume with uuid " + r.getUuid() + " is already present in the storage");
-
+        } else if (isElementPresent(r.getUuid())) {
+            System.out.println("Resume with uuid " + r.getUuid() + " is already present in the storage");
             } else {
                 storage[size] = r;
                 size++;
             }
         }
-    }
 
     public Resume get(String uuid) {
         if (!isElementPresent(uuid)) {
@@ -75,7 +72,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+        return Arrays.copyOf(storage, size);
     }
 
     public int size() {
