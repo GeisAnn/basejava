@@ -15,4 +15,8 @@ public class Resume {
         this.uuid = uuid;
     }
 
+    @Override
+    public String toString() {
+        return uuid;
+    }
 }
