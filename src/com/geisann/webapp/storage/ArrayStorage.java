@@ -18,7 +18,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        int index = indexOfElementPresent(r.getUuid());
+        int index = findIndex(r.getUuid());
         if (index == -1) {
             System.out.println("Resume with uuid " + r.getUuid() + " is not present in the storage");
         } else {
@@ -30,7 +30,7 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (size == storage.length) {
             System.out.println("The storage is full");
-        } else if (indexOfElementPresent(r.getUuid()) != -1) {
+        } else if (findIndex(r.getUuid()) != -1) {
             System.out.println("Resume with uuid " + r.getUuid() + " is already present in the storage");
         } else {
             storage[size] = r;
@@ -39,17 +39,16 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int index = indexOfElementPresent(uuid);
-        if (index == -1) {
-            System.out.println("Resume with uuid " + uuid + " is not present in the storage");
-        } else {
+        int index = findIndex(uuid);
+        if (index != -1) {
             return storage[index];
         }
+        System.out.println("Resume with uuid " + uuid + " is not present in the storage");
         return null;
     }
 
     public void delete(String uuid) {
-        int index = indexOfElementPresent(uuid);
+        int index = findIndex(uuid);
         if (index == -1) {
             System.out.println("Resume with uuid " + uuid + " is not present in the storage");
         } else {
@@ -70,7 +69,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int indexOfElementPresent(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
