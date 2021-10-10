@@ -20,7 +20,7 @@ public class ArrayStorage {
     public void update(Resume r) {
         int index = findIndex(r.getUuid());
         if (index == -1) {
-            System.out.println("Resume with uuid " + r.getUuid() + " is not present in the storage");
+            System.out.println("Resume " + r.getUuid() + " not exist");
         } else {
             storage[index] = r;
             System.out.println("Resume was updated");
@@ -28,10 +28,10 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size == storage.length) {
-            System.out.println("The storage is full");
-        } else if (findIndex(r.getUuid()) != -1) {
-            System.out.println("Resume with uuid " + r.getUuid() + " is already present in the storage");
+        if (findIndex(r.getUuid()) != -1) {
+            System.out.println("Resume " + r.getUuid() + " already exist");
+        } else if (size >= storage.length) {
+            System.out.println("Storage overflow");
         } else {
             storage[size] = r;
             size++;
@@ -43,14 +43,14 @@ public class ArrayStorage {
         if (index != -1) {
             return storage[index];
         }
-        System.out.println("Resume with uuid " + uuid + " is not present in the storage");
+        System.out.println("Resume " + uuid + " not exist");
         return null;
     }
 
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index == -1) {
-            System.out.println("Resume with uuid " + uuid + " is not present in the storage");
+            System.out.println("Resume " + uuid + " not exist");
         } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
