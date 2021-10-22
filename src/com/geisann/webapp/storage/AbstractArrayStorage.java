@@ -22,35 +22,25 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
+    public void update(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index <0) {
+            System.out.println("Resume " + r.getUuid() + " not exist");
+        } else {
+            storage[index] = r;
+            System.out.println("Resume was updated");
+        }
+    }
+
     public void save(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index != -1) {
+        if (index >= 0) {
             System.out.println("Resume " + r.getUuid() + " already exist");
         } else if (size >= STORAGE_LIMIT) {
             System.out.println("Storage overflow");
         } else {
             addElement(r, index);
             size++;
-        }
-    }
-
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("Resume " + uuid + " not exist");
-        } else {
-            deleteElement(index);
-            size--;
-        }
-    }
-
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index == -1) {
-            System.out.println("Resume " + r.getUuid() + " not exist");
-        } else {
-            storage[index] = r;
-            System.out.println("Resume was updated");
         }
     }
 
@@ -63,6 +53,17 @@ public abstract class AbstractArrayStorage implements Storage {
         return null;
     }
 
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            System.out.println("Resume " + uuid + " not exist");
+        } else {
+            copyElements(index);
+            storage[size - 1] = null;
+            size--;
+        }
+    }
+
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
@@ -71,7 +72,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void addElement(Resume r, int index);
 
-    protected abstract void deleteElement(int index);
+    protected abstract void copyElements(int index);
 }
 
 

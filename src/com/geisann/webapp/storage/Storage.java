@@ -7,6 +7,8 @@ import com.geisann.webapp.model.Resume;
  */
 public interface Storage {
 
+    int size();
+
     void clear();
 
     void update(Resume r);
@@ -18,6 +20,4 @@ public interface Storage {
     void delete(String uuid);
 
     Resume[] getAll();
-
-    int size();
 }
