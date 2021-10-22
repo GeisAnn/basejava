@@ -8,12 +8,12 @@ import com.geisann.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void addElement(Resume r, int index) {
+    protected void addResume(Resume r, int index) {
         storage[size] = r;
     }
 
     @Override
-    protected void copyElements(int index) {
+    protected void deleteResume(int index) {
         storage[index] = storage[size - 1];
     }
 
