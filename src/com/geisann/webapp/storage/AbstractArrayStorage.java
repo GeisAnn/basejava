@@ -1,5 +1,8 @@
 package com.geisann.webapp.storage;
 
+import com.geisann.webapp.exception.ExistStorageException;
+import com.geisann.webapp.exception.NotExistStorageException;
+import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -25,7 +28,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume r) {
         int index = getIndex(r.getUuid());
         if (index < 0) {
-            System.out.println("Resume " + r.getUuid() + " not exist");
+            throw new NotExistStorageException(r.getUuid());
         } else {
             storage[index] = r;
             System.out.println("Resume was updated");
@@ -35,9 +38,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume r) {
         int index = getIndex(r.getUuid());
         if (index >= 0) {
-            System.out.println("Resume " + r.getUuid() + " already exist");
+            throw new ExistStorageException(r.getUuid());
         } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
+            throw new StorageException("Storage overflow", r.getUuid());
         } else {
             addResume(r, index);
             size++;
@@ -46,17 +49,16 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0) {
+        if (index >= 0) {
             return storage[index];
         }
-        System.out.println("Resume " + uuid + " not exist");
-        return null;
+        throw new NotExistStorageException(uuid);
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Resume " + uuid + " not exist");
+            throw new NotExistStorageException(uuid);
         } else {
             deleteResume(index);
             storage[size - 1] = null;
