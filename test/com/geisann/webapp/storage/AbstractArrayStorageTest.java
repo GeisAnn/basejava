@@ -22,36 +22,36 @@ public class AbstractArrayStorageTest {
     }
 
     @Test
-    public void size() throws Exception{
+    public void size() throws Exception {
         Assert.assertEquals(3, storage.size());
     }
 
     @Test
-    public void clear() throws Exception{
+    public void clear() throws Exception {
     }
 
     @Test
-    public void update() throws Exception{
+    public void update() throws Exception {
     }
 
     @Test
-    public void save() throws Exception{
+    public void save() throws Exception {
     }
 
     @Test
-    public void get() throws Exception{
+    public void get() throws Exception {
     }
 
-    @Test (expected = NotExistStorageException.class)
-    public void getNotExist() throws Exception{
+    @Test(expected = NotExistStorageException.class)
+    public void getNotExist() throws Exception {
         storage.get("dummy");
     }
 
     @Test
-    public void delete() throws Exception{
+    public void delete() throws Exception {
     }
 
     @Test
-    public void getAll() throws Exception{
+    public void getAll() throws Exception {
     }
 }
