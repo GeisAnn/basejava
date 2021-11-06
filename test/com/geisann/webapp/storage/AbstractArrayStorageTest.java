@@ -68,13 +68,12 @@ public abstract class AbstractArrayStorageTest {
     public void storageOverflow() throws Exception {
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                String UUID_ = "uuid" + i;
-                storage.save(new Resume(UUID_));
+                storage.save(new Resume());
             }
         } catch (Exception e) {
             Assert.fail("Overflow ahead of time");
         }
-        storage.save(new Resume("uuid10001"));
+        storage.save(new Resume());
     }
 
     @Test
