@@ -3,11 +3,15 @@ package com.geisann.webapp.storage;
 import com.geisann.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    ArrayList<Resume> listStorage = new ArrayList<>();
+    private List<Resume> listStorage = new ArrayList<>();
+
+    @Override
+    public int size() {
+        return listStorage.size();
+    }
 
     @Override
     public void clear() {
@@ -16,12 +20,16 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(Resume r, int index) {
-        listStorage.add(index, r);
+        listStorage.set(index, r);
     }
 
     @Override
     protected void addResume(Resume r, int index) {
         listStorage.add(r);
+    }
+
+    @Override
+    protected void checkOverflow(Resume r) {
     }
 
     @Override
@@ -41,14 +49,8 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected int getIndex(String uuid) {
-        Iterator<Resume> iterator = listStorage.iterator();
-        while (iterator.hasNext()) {
-            Resume r = iterator.next();
-            if (Objects.equals(r.getUuid(), uuid)) {
-                return listStorage.indexOf(r);
-            }
-        }
-        return -1;
+        Resume r = new Resume(uuid);
+        return listStorage.indexOf(r);
     }
 }
 

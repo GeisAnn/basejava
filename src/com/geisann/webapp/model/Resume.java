@@ -37,7 +37,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return uuid.hashCode();
     }
 
     @Override
