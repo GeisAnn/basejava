@@ -50,7 +50,7 @@ public abstract class AbstractArrayStorageTest {
     public void update() throws Exception {
         storage.update(r3);
         assertEquals(3, storage.size());
-        assertNotEquals(r3, storage.get(UUID_3));
+        assertSame(r3, storage.get(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)

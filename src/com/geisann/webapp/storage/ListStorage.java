@@ -19,17 +19,24 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Resume r, int index) {
-        listStorage.set(index, r);
+    public Resume[] getAll() {
+        return listStorage.toArray(new Resume[listStorage.size()]);
     }
 
     @Override
-    protected void addResume(Resume r, int index) {
+    protected int getIndex(String uuid) {
+        Resume r = new Resume(uuid);
+        return listStorage.indexOf(r);
+    }
+
+    @Override
+    protected void saveResume(Resume r, int index) {
         listStorage.add(r);
     }
 
     @Override
-    protected void checkOverflow(Resume r) {
+    protected void updateResume(Resume r, int index) {
+        listStorage.set(index, r);
     }
 
     @Override
@@ -40,17 +47,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void deleteResume(int index) {
         listStorage.remove(index);
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return listStorage.toArray(new Resume[listStorage.size()]);
-    }
-
-    @Override
-    protected int getIndex(String uuid) {
-        Resume r = new Resume(uuid);
-        return listStorage.indexOf(r);
     }
 }
 

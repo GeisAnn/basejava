@@ -23,10 +23,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    protected void checkOverflow(Resume r) {
+    public Resume[] getAll() {
+        return Arrays.copyOf(storage, size);
+    }
+
+    protected void saveResume(Resume r, int index) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         }
+        saveResumeToStorage(r, index);
+        size++;
     }
 
     protected void updateResume(Resume r, int index) {
@@ -37,18 +43,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return storage[index];
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
-    protected void plusResume() {
-        size++;
-    }
-
-    protected void minusResume() {
+    protected void deleteResume(int index) {
+        deleteResumeFromStorage(index);
         storage[size - 1] = null;
         size--;
     }
+
+    protected abstract void saveResumeToStorage(Resume r, int index);
+
+    protected abstract void deleteResumeFromStorage(int index);
 }
 
 
