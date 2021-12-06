@@ -21,43 +21,38 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[mapStorage.size()];
-        int i = 0;
-        for (Resume resume : mapStorage.values()) {
-            resumes[i] = resume;
-            i++;
-        }
+        Resume[] resumes = mapStorage.values().toArray(new Resume[mapStorage.size()]);
         Arrays.sort(resumes);
         return resumes;
     }
 
     @Override
-    protected boolean existIndex(Object index) {
-        return mapStorage.containsKey(index);
+    protected boolean isExist(Object searchKey) {
+        return mapStorage.containsKey(searchKey);
     }
 
     @Override
-    protected String getIndex(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected void saveResume(Resume r, Object index) {
-        mapStorage.put((String) index, r);
+    protected void saveResume(Resume r, Object searchKey) {
+        mapStorage.put((String) searchKey, r);
     }
 
     @Override
-    protected void updateResume(Resume r, Object index) {
-        mapStorage.put((String) index, r);
+    protected void updateResume(Resume r, Object searchKey) {
+        mapStorage.put((String) searchKey, r);
     }
 
     @Override
-    protected Resume getResume(Object index) {
-        return mapStorage.get(index);
+    protected Resume getResume(Object searchKey) {
+        return mapStorage.get(searchKey);
     }
 
     @Override
-    protected void deleteResume(Object index) {
-        mapStorage.remove(index);
+    protected void deleteResume(Object searchKey) {
+        mapStorage.remove(searchKey);
     }
 }

@@ -7,50 +7,50 @@ import com.geisann.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void save(Resume r) {
-        Object index = indexOfNotExistResume(r.getUuid());
-        saveResume(r, index);
+        Object searchKey = findSearchKeyIfResumeNotExist(r.getUuid());
+        saveResume(r, searchKey);
     }
 
     public void update(Resume r) {
-        Object index = indexOfExistResume(r.getUuid());
-        updateResume(r, index);
+        Object searchKey = findSearchKeyIfResumeExist(r.getUuid());
+        updateResume(r, searchKey);
     }
 
     public Resume get(String uuid) {
-        Object index = indexOfExistResume(uuid);
-        return getResume(index);
+        Object searchKey = findSearchKeyIfResumeExist(uuid);
+        return getResume(searchKey);
     }
 
     public void delete(String uuid) {
-        Object index = indexOfExistResume(uuid);
-        deleteResume(index);
+        Object searchKey = findSearchKeyIfResumeExist(uuid);
+        deleteResume(searchKey);
     }
 
-    private Object indexOfNotExistResume(String uuid) {
-        Object index = getIndex(uuid);
-        if (existIndex(index)) {
+    private Object findSearchKeyIfResumeNotExist(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
-        return index;
+        return searchKey;
     }
 
-    private Object indexOfExistResume(String uuid) {
-        Object index = getIndex(uuid);
-        if (!existIndex(index)) {
+    private Object findSearchKeyIfResumeExist(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return index;
+        return searchKey;
     }
 
-    protected abstract boolean existIndex(Object index);
+    protected abstract boolean isExist(Object searchKey);
 
-    protected abstract Object getIndex(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
-    protected abstract void saveResume(Resume r, Object index);
+    protected abstract void saveResume(Resume r, Object searchKey);
 
-    protected abstract void updateResume(Resume r, Object index);
+    protected abstract void updateResume(Resume r, Object searchKey);
 
-    protected abstract Resume getResume(Object index);
+    protected abstract Resume getResume(Object searchKey);
 
-    protected abstract void deleteResume(Object index);
+    protected abstract void deleteResume(Object searchKey);
 }
