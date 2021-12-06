@@ -7,46 +7,50 @@ import com.geisann.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        }
+        Object index = indexOfNotExistResume(r.getUuid());
         saveResume(r, index);
     }
 
     public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            updateResume(r, index);
-        }
+        Object index = indexOfExistResume(r.getUuid());
+        updateResume(r, index);
     }
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            return getResume(index);
-        }
-        throw new NotExistStorageException(uuid);
+        Object index = indexOfExistResume(uuid);
+        return getResume(index);
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            deleteResume(index);
-        }
+        Object index = indexOfExistResume(uuid);
+        deleteResume(index);
     }
 
-    protected abstract int getIndex(String uuid);
+    private Object indexOfNotExistResume(String uuid) {
+        Object index = getIndex(uuid);
+        if (existIndex(index)) {
+            throw new ExistStorageException(uuid);
+        }
+        return index;
+    }
 
-    protected abstract void saveResume(Resume r, int index);
+    private Object indexOfExistResume(String uuid) {
+        Object index = getIndex(uuid);
+        if (!existIndex(index)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return index;
+    }
 
-    protected abstract void updateResume(Resume r, int index);
+    protected abstract boolean existIndex(Object index);
 
-    protected abstract Resume getResume(int index);
+    protected abstract Object getIndex(String uuid);
 
-    protected abstract void deleteResume(int index);
+    protected abstract void saveResume(Resume r, Object index);
+
+    protected abstract void updateResume(Resume r, Object index);
+
+    protected abstract Resume getResume(Object index);
+
+    protected abstract void deleteResume(Object index);
 }
