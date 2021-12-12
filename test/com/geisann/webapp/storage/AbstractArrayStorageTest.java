@@ -18,10 +18,10 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private final Resume r1 = new Resume(UUID_1);
-    private final Resume r2 = new Resume(UUID_2);
-    private final Resume r3 = new Resume(UUID_3);
-    private final Resume r4 = new Resume(UUID_4);
+    private final Resume r1 = new Resume(UUID_1, "Name1");
+    private final Resume r2 = new Resume(UUID_2, "Name2");
+    private final Resume r3 = new Resume(UUID_3, "Name3");
+    private final Resume r4 = new Resume(UUID_4, "Name4");
 
     protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -74,12 +74,12 @@ public abstract class AbstractArrayStorageTest {
     public void storageOverflow() throws Exception {
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume("Name" + i));
             }
         } catch (StorageException e) {
             fail("Overflow ahead of time");
         }
-        storage.save(new Resume());
+        storage.save(new Resume("NameToOverflow"));
     }
 
     @Test

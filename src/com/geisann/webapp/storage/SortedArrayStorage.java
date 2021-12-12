@@ -3,6 +3,7 @@ package com.geisann.webapp.storage;
 import com.geisann.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Array based storage for Resumes
@@ -11,8 +12,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected Integer getSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+        Resume searchKey = new Resume(uuid, "Name");
+        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 
     @Override
@@ -29,4 +30,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             System.arraycopy(storage, searchKey + 1, storage, searchKey, number);
         }
     }
+
+    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
 }
