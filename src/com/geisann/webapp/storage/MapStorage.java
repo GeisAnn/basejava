@@ -2,10 +2,7 @@ package com.geisann.webapp.storage;
 
 import com.geisann.webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapStorage extends AbstractStorage {
     private Map<String, Resume> mapStorage = new HashMap<>();
@@ -21,13 +18,9 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        Resume[] resumes = mapStorage.values().toArray(new Resume[0]);
-        Arrays.sort(resumes, RESUME_COMPARATOR);
-        return resumes;
+    public List<Resume> getAllAsList() {
+        return new ArrayList <> (mapStorage.values());
     }
-
-    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
 
     @Override
     protected boolean isExist(Object searchKey) {

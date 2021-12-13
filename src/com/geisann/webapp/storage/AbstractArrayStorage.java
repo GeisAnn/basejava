@@ -4,6 +4,7 @@ import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -23,8 +24,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    public List<Resume> getAllAsList() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     protected void saveResume(Resume r, Object searchKey) {

@@ -6,6 +6,8 @@ import com.geisann.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 
@@ -91,8 +93,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() throws Exception {
-        Resume[] expectedResumes = {r1, r2, r3};
-        assertArrayEquals(expectedResumes, storage.getAll());
+    public void getAllSorted() throws Exception {
+        assertEquals(Arrays.asList(r1, r2, r3), storage.getAllSorted());
     }
 }
