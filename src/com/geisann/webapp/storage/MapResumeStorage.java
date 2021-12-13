@@ -2,9 +2,12 @@ package com.geisann.webapp.storage;
 
 import com.geisann.webapp.model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
@@ -19,36 +22,36 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getAllAsList() {
-        return new ArrayList <> (mapStorage.values());
+        return new ArrayList<>(mapStorage.values());
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return mapStorage.containsKey(searchKey);
+        return mapStorage.containsValue(searchKey);
     }
 
     @Override
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected Resume getSearchKey(String uuid) {
+        return mapStorage.get(uuid);
     }
 
     @Override
     protected void saveResume(Resume r, Object searchKey) {
-        mapStorage.put((String) searchKey, r);
+        mapStorage.put(r.getUuid(), r);
     }
 
     @Override
     protected void updateResume(Resume r, Object searchKey) {
-        mapStorage.put((String) searchKey, r);
+        mapStorage.put(r.getUuid(), r);
     }
 
     @Override
     protected Resume getResume(Object searchKey) {
-        return mapStorage.get(searchKey);
+        return (Resume) searchKey;
     }
 
     @Override
     protected void deleteResume(Object searchKey) {
-        mapStorage.remove(searchKey);
+        mapStorage.remove(((Resume) searchKey).getUuid());
     }
 }
