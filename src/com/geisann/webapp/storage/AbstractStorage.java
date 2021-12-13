@@ -36,7 +36,13 @@ public abstract class AbstractStorage implements Storage {
         return list;
     }
 
-    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> {
+        int res = o1.getFullName().compareTo(o2.getFullName());
+        if (res == 0) {
+            return o1.getUuid().compareTo(o2.getUuid());
+        }
+        return res;
+    };
 
     private Object findSearchKeyIfResumeNotExist(String uuid) {
         Object searchKey = getSearchKey(uuid);
