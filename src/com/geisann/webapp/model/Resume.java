@@ -45,13 +45,4 @@ public class Resume {
     public int hashCode() {
         return Objects.hash(uuid, fullName);
     }
-
-    /*@Override
-    public int compareTo(Resume o) {
-        int res = fullName.compareTo(o.fullName);
-        if (res == 0) {
-            res = uuid.compareTo(o.uuid);
-        }
-        return res;
-    }*/
 }
