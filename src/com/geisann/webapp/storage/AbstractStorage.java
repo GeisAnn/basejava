@@ -4,11 +4,12 @@ import com.geisann.webapp.exception.ExistStorageException;
 import com.geisann.webapp.exception.NotExistStorageException;
 import com.geisann.webapp.model.Resume;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
+
+    Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     public void save(Resume r) {
         Object searchKey = findSearchKeyIfResumeNotExist(r.getUuid());
@@ -32,11 +33,9 @@ public abstract class AbstractStorage implements Storage {
 
     public List<Resume> getAllSorted() {
         List<Resume> list = getAllAsList();
-        Collections.sort(list, RESUME_COMPARATOR);
+        list.sort(RESUME_COMPARATOR);
         return list;
     }
-
-    Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid).thenComparing(Resume::getFullName);
 
     private Object findSearchKeyIfResumeNotExist(String uuid) {
         Object searchKey = getSearchKey(uuid);
