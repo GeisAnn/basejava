@@ -5,7 +5,7 @@ import com.geisann.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage <Integer>{
     private List<Resume> listStorage = new ArrayList<>();
 
     @Override
@@ -24,7 +24,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return searchKey != null;
     }
 
@@ -39,22 +39,22 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveResume(Resume r, Object searchKey) {
+    protected void saveResume(Resume r, Integer searchKey) {
         listStorage.add(r);
     }
 
     @Override
-    protected void updateResume(Resume r, Object searchKey) {
-        listStorage.set((Integer) searchKey, r);
+    protected void updateResume(Resume r, Integer searchKey) {
+        listStorage.set(searchKey, r);
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return listStorage.get((Integer) searchKey);
+    protected Resume getResume(Integer searchKey) {
+        return listStorage.get(searchKey);
     }
 
     @Override
-    protected void deleteResume(Object searchKey) {
-        listStorage.remove(((Integer) searchKey).intValue());
+    protected void deleteResume(Integer searchKey) {
+        listStorage.remove(searchKey.intValue());
     }
 }

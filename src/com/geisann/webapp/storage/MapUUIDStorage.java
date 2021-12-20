@@ -4,7 +4,7 @@ import com.geisann.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapUUIDStorage extends AbstractStorage {
+public class MapUUIDStorage extends AbstractStorage <String> {
     private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
@@ -23,7 +23,7 @@ public class MapUUIDStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(String searchKey) {
         return mapStorage.containsKey(searchKey);
     }
 
@@ -33,22 +33,22 @@ public class MapUUIDStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveResume(Resume r, Object searchKey) {
-        mapStorage.put((String) searchKey, r);
+    protected void saveResume(Resume r, String searchKey) {
+        mapStorage.put(searchKey, r);
     }
 
     @Override
-    protected void updateResume(Resume r, Object searchKey) {
-        mapStorage.put((String) searchKey, r);
+    protected void updateResume(Resume r, String searchKey) {
+        mapStorage.put(searchKey, r);
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
+    protected Resume getResume(String searchKey) {
         return mapStorage.get(searchKey);
     }
 
     @Override
-    protected void deleteResume(Object searchKey) {
+    protected void deleteResume(String searchKey) {
         mapStorage.remove(searchKey);
     }
 }
