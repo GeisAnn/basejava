@@ -1,5 +1,6 @@
 package com.geisann.webapp;
 
+import com.geisann.webapp.model.ContactType;
 import com.geisann.webapp.model.SectionType;
 
 public class TestSingleton {
@@ -21,6 +22,10 @@ public class TestSingleton {
         System.out.println(instance.ordinal());
 
         for (SectionType type : SectionType.values()) {
+            System.out.println(type.getTitle());
+        }
+
+        for (ContactType type : ContactType.values()) {
             System.out.println(type.getTitle());
         }
     }

@@ -1,5 +1,7 @@
 package com.geisann.webapp.model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -10,6 +12,8 @@ public class Resume {
 
     private final String uuid;
     private final String fullName;
+    private final Map<ContactType, String> contacts = new HashMap<>();
+    private final Map<SectionType, AbstractSection> sections = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -17,7 +21,7 @@ public class Resume {
 
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
-        Objects.requireNonNull(fullName,"fullName must not be null");
+        Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -28,6 +32,22 @@ public class Resume {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public String getContacts(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public void setContacts(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public AbstractSection getSections(SectionType type) {
+        return sections.get(type);
+    }
+
+    public void setSections(SectionType type, AbstractSection section) {
+        sections.put(type, section);
     }
 
     @Override
