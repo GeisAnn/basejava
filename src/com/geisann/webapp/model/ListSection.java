@@ -1,5 +1,6 @@
 package com.geisann.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,6 +10,10 @@ public class ListSection extends AbstractSection {
     public ListSection(List<String> list) {
         Objects.requireNonNull(list, "list must not be null");
         this.list = list;
+    }
+
+    public ListSection(String... list) {
+        this (Arrays.asList(list));
     }
 
     public List<String> getList() {
