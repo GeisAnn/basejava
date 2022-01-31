@@ -4,8 +4,8 @@ import com.geisann.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapUUIDStorage extends AbstractStorage <String> {
-    private Map<String, Resume> mapStorage = new HashMap<>();
+public class MapUuidStorage extends AbstractStorage <String> {
+    private final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     public int size() {
