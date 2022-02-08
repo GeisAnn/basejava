@@ -3,13 +3,18 @@ package com.geisann.webapp.storage;
 import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.nio.file.Files.newInputStream;
+import static java.nio.file.Files.newOutputStream;
 
 public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     private Path directory;
@@ -33,69 +38,67 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Directory is empty", null);
+        try {
+            return (int) Files.list(directory).count();
+        } catch (IOException e) {
+            throw new StorageException("Path count error", null);
         }
-        return list.length;
     }
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return new Path(directory, uuid);
+        return directory.resolve(uuid);
     }
 
     @Override
-    protected void updateResume(Resume r, File file) {
+    protected void updateResume(Resume r, Path path) {
         try {
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            doWrite(r, newOutputStream(path));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("IO error", path.getFileName().toString(), e);
         }
     }
 
     @Override
-    protected boolean isExist(File file) {
-        return file.exists();
+    protected boolean isExist(Path path) {
+        return Files.exists(path);
     }
 
     @Override
-    protected void saveResume(Resume r, File file) {
+    protected void saveResume(Resume r, Path path) {
         try {
-            file.createNewFile();
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            Files.createFile(path);
+            doWrite(r, newOutputStream(path));
         } catch (IOException e) {
-            throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
+            throw new StorageException("Couldn't create file(path)" + path.toAbsolutePath(), path.getFileName().toString(), e);
         }
     }
 
     @Override
-    protected Resume getResume(File file) {
+    protected Resume getResume(Path path) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(file)));
+            return doRead(newInputStream(path));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("IO error", path.getFileName().toString(), e);
         }
     }
 
     @Override
-    protected void deleteResume(File file) {
-        if (!file.delete()) {
-            throw new StorageException("File delete error", file.getName());
+    protected void deleteResume(Path path) {
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            throw new StorageException("File delete error", path.getFileName().toString());
         }
     }
 
     @Override
     protected List<Resume> getAllAsList() {
-        File[] list = directory.listFiles();
-        if (list == null) {
+        try {
+            return Files.list(directory).map(this::getResume).collect(Collectors.toList());
+        } catch (IOException e) {
             throw new StorageException("Directory is empty", null);
         }
-        List<Resume> listStorage = new ArrayList<>();
-        for (File file : list) {
-            listStorage.add(getResume(file));
-        }
-        return listStorage;
     }
 
     protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
