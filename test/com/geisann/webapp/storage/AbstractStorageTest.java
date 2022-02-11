@@ -10,12 +10,11 @@ import java.io.File;
 import java.util.Arrays;
 
 import static com.geisann.webapp.ResumeTestData.testResumeData;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\Users\\a\\Documents\\GitHub\\basejava\\src\\com\\geisann\\webapp\\storage");
+    protected static final File STORAGE_DIR = new File("C:\\Users\\a\\Documents\\GitHub\\basejava\\storage");
 
     protected Storage storage;
 
@@ -62,7 +61,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         storage.update(r3);
         assertEquals(3, storage.size());
-        assertSame(r3, storage.get(UUID_3));
+        assertEquals(r3, storage.get(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)

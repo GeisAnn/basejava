@@ -4,8 +4,6 @@ import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,11 +14,14 @@ import java.util.stream.Collectors;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.newOutputStream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
 
-    protected AbstractPathStorage(String dir) {
+    private Serializer serializer;
+
+    protected PathStorage(String dir, Serializer serializer) {
         directory = Paths.get(dir);
+        this.serializer = serializer;
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
@@ -53,7 +54,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateResume(Resume r, Path path) {
         try {
-            doWrite(r, newOutputStream(path));
+            serializer.doWrite(r, newOutputStream(path));
         } catch (IOException e) {
             throw new StorageException("IO error", path.getFileName().toString(), e);
         }
@@ -68,7 +69,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected void saveResume(Resume r, Path path) {
         try {
             Files.createFile(path);
-            doWrite(r, newOutputStream(path));
+            serializer.doWrite(r, newOutputStream(path));
         } catch (IOException e) {
             throw new StorageException("Couldn't create file(path)" + path.toAbsolutePath(), path.getFileName().toString(), e);
         }
@@ -77,7 +78,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getResume(Path path) {
         try {
-            return doRead(newInputStream(path));
+            return serializer.doRead(newInputStream(path));
         } catch (IOException e) {
             throw new StorageException("IO error", path.getFileName().toString(), e);
         }
@@ -100,8 +101,4 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new StorageException("Directory is empty", null);
         }
     }
-
-    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
 }
