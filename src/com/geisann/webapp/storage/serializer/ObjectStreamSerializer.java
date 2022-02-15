@@ -1,4 +1,4 @@
-package com.geisann.webapp.storage;
+package com.geisann.webapp.storage.serializer;
 
 import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;

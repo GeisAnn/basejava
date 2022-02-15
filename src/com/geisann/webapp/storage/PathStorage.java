@@ -2,6 +2,7 @@ package com.geisann.webapp.storage;
 
 import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;
+import com.geisann.webapp.storage.serializer.Serializer;
 
 import java.io.IOException;
 import java.nio.file.Files;

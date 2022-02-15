@@ -2,6 +2,7 @@ package com.geisann.webapp.storage;
 
 import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;
+import com.geisann.webapp.storage.serializer.Serializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,20 +28,15 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] list = directory.listFiles();
-        if (list != null) {
-            for (File file : list) {
-                deleteResume(file);
-            }
+        File[] list = getListFiles(directory);
+        for (File file : list) {
+            deleteResume(file);
         }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Directory is empty", null);
-        }
+        File[] list = getListFiles(directory);
         return list.length;
     }
 
@@ -67,10 +63,10 @@ public class FileStorage extends AbstractStorage<File> {
     protected void saveResume(Resume r, File file) {
         try {
             file.createNewFile();
-            serializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
+        updateResume(r, file);
     }
 
     @Override
@@ -91,14 +87,19 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getAllAsList() {
-        File[] list = directory.listFiles();
-        if (list == null) {
-            throw new StorageException("Directory is empty", null);
-        }
+        File[] list = getListFiles(directory);
         List<Resume> listStorage = new ArrayList<>();
         for (File file : list) {
             listStorage.add(getResume(file));
         }
         return listStorage;
+    }
+
+    private File[] getListFiles(File directory) {
+        File[] list = directory.listFiles();
+        if (list == null) {
+            throw new StorageException("Is not directory", null);
+        }
+        return list;
     }
 }
