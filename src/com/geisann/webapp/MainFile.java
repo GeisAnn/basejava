@@ -11,14 +11,14 @@ public class MainFile {
                     System.out.println(indent + "File: " + file.getName());
                 } else if (dir.isDirectory()) {
                     System.out.println(indent + "Directory: " + file.getName());
-                    findFiles(file, "   ");
+                    findFiles(file, indent + "   ");
                 }
             }
         }
     }
 
     public static void main(String[] args) {
-        File dir = new File("./src/com/geisann/webapp");
+        File dir = new File("C:/Users/a/Documents/GitHub/basejava");
         findFiles(dir, "");
     }
 }
