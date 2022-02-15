@@ -4,6 +4,8 @@ import com.geisann.webapp.exception.StorageException;
 import com.geisann.webapp.model.Resume;
 import com.geisann.webapp.storage.serializer.Serializer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.newOutputStream;
@@ -31,20 +34,12 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteResume);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
-        }
+        getListFiles().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("Path count error", null);
-        }
+        return (int) getListFiles().count();
     }
 
     @Override
@@ -55,7 +50,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateResume(Resume r, Path path) {
         try {
-            serializer.doWrite(r, newOutputStream(path));
+            serializer.doWrite(r, new BufferedOutputStream(newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error", path.getFileName().toString(), e);
         }
@@ -70,16 +65,16 @@ public class PathStorage extends AbstractStorage<Path> {
     protected void saveResume(Resume r, Path path) {
         try {
             Files.createFile(path);
-            serializer.doWrite(r, newOutputStream(path));
         } catch (IOException e) {
             throw new StorageException("Couldn't create file(path)" + path.toAbsolutePath(), path.getFileName().toString(), e);
         }
+        updateResume(r, path);
     }
 
     @Override
     protected Resume getResume(Path path) {
         try {
-            return serializer.doRead(newInputStream(path));
+            return serializer.doRead(new BufferedInputStream(newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error", path.getFileName().toString(), e);
         }
@@ -96,10 +91,14 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getAllAsList() {
+        return getListFiles().map(this::getResume).collect(Collectors.toList());
+    }
+
+    private Stream<Path> getListFiles() {
         try {
-            return Files.list(directory).map(this::getResume).collect(Collectors.toList());
+            return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Directory is empty", null);
+            throw new StorageException("Directory read error", null);
         }
     }
 }
