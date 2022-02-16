@@ -28,7 +28,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] list = getListFiles(directory);
+        File[] list = getListFiles();
         for (File file : list) {
             deleteResume(file);
         }
@@ -36,7 +36,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        File[] list = getListFiles(directory);
+        File[] list = getListFiles();
         return list.length;
     }
 
@@ -87,7 +87,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getAllAsList() {
-        File[] list = getListFiles(directory);
+        File[] list = getListFiles();
         List<Resume> listStorage = new ArrayList<>();
         for (File file : list) {
             listStorage.add(getResume(file));
@@ -95,7 +95,7 @@ public class FileStorage extends AbstractStorage<File> {
         return listStorage;
     }
 
-    private File[] getListFiles(File directory) {
+    private File[] getListFiles() {
         File[] list = directory.listFiles();
         if (list == null) {
             throw new StorageException("Is not directory", null);
