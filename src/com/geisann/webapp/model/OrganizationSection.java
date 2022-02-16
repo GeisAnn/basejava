@@ -1,21 +1,27 @@
 package com.geisann.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationSection extends AbstractSection {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<Organization> list;
+    private List<Organization> list;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(List<Organization> list) {
         Objects.requireNonNull(list, "list must not be null");
         this.list = list;
     }
 
-    public OrganizationSection (Organization ... list) {
+    public OrganizationSection(Organization... list) {
         this(Arrays.asList(list));
     }
 
